@@ -1,0 +1,73 @@
+**Title:** BUILD TIME  
+**Genre:** Sci‑fi Action-Drama (Shankar-style spectacle)  
+**Setting:** Present—TAMU Tidal Hackathon auditorium & build floor (neon, steel, screens). Past—Agra, 1630s Taj Mahal construction (gold dust, marble white, gigantic scaffolds).  
+**Characters:**  
+- **AARAV** (20s): sleep-deprived hacker; stubborn, idealistic.  
+- **EMCEE**: electric, countdown energy.  
+- **USTAD RAHIM** (40s): Taj master builder; calm authority, visionary.  
+- **FATIMA** (30s): artisan inlay lead; sharp, process-minded.  
+**Plot Overview:** Aarav’s failing demo becomes a “blueprint-portal” via his badge QR and laptop fan. In 1630s Agra, he helps “debug” a real mega-build, learning systems thinking and teamwork. He returns and ships his prototype—realizing hackathons compress time through collaboration.  
+
+---
+
+## SCENES (60–90s)
+
+### 1) OPENING SCENE — “24 HOURS”  
+**Visuals:** Hackathon hall: LED walls, timer ticking, students like soldiers. Cold teal palette.  
+**Action:** Aarav slumps over laptop: red error logs, CAD mockups, “DEMO FAILED.” EMCEE’s voice booms.  
+**Camera Transition:** Whip-pan across frantic teams → push-in to Aarav’s eyes.  
+**Close-Up:** Badge lanyard swings; QR code flickers like a living circuit.  
+**Text on Screen:** “TAMU TIDAL HACKATHON — FINAL 24 HOURS.”
+
+**Dialogue:**  
+**EMCEE (VO):** “You’ve got 24 hours to build something impossible!”  
+**AARAV (whisper):** “Impossible… unless time bends.”
+
+---
+
+### 2) MIDDLE — “BLUEPRINT-PORTAL”  
+**Visuals:** Laptop fan roar becomes a bass hum. UI gridlines spill out, wrapping the air like an AR cage.  
+**Action:** QR code liquefies into a spiraling blueprint mandala; marble texture floods the screen. Aarav reaches—gets pulled.  
+**Camera Transition:** Match cut: spinning QR → spinning stone pulley wheel.  
+**Close-Up:** Aarav’s fingers dusted in limestone powder.  
+**Text on Screen:** “AGRA — 1632 (SUBTITLED).”
+
+---
+
+### 3) MIDDLE — “THE SITE OF A MIRACLE”  
+**Visuals:** The Taj under construction: colossal brick core, scaffolds like a wooden city; sparks from chisels; elephants hauling stone. Warm gold palette.  
+**Action:** Aarav stumbles. Workers pause. Ustad Rahim approaches, not angry—curious.  
+**Camera Transition:** Crane shot reveals the dome skeleton rising like a half-written equation.  
+**Close-Up:** Rolled parchment plan opens—resembles a spec doc.  
+
+**Dialogue (subtitled):**  
+**USTAD RAHIM:** “New hand? Or new mind?”  
+**AARAV:** “I… build things. Fast.”  
+**FATIMA (dry):** “Fast breaks. Precision holds.”
+
+---
+
+### 4) CLIMAX — “DEBUGGING HISTORY”  
+**Visuals:** Shankar-style intercut montage: Aarav’s phone level over marble slabs; artisans aligning calligraphy; supply carts rerouted like a flowchart. UI grid overlays briefly on real scaffolding.  
+**Action:** Aarav sketches modular workflow: teams in parallel, checkpoints, versioning marks on stones. A crane pulley jams—seconds from disaster. Aarav signals a load redistribution using simple angles; catastrophe avoided.  
+**Camera Transition:** Slow-motion: near-falling slab → hard cut to Aarav’s hackathon screen “BUILD RUNNING…”  
+**Close-Up:** Rahim’s eyes—pride without ego.
+
+**Dialogue:**  
+**USTAD RAHIM:** “Great works aren’t finished in a day.”  
+**AARAV:** “Then how do you start?”  
+**USTAD RAHIM:** “With a team that refuses to stop.”
+
+---
+
+### 5) ENDING — “SHIP IT”  
+**Visuals:** Smash back to present: Aarav jolts awake. Same badge. Same laptop. Now calm focus. Palette shifts to hopeful sunrise amber through windows.  
+**Action:** He simplifies the prototype, modularizes, hits run—clean demo. Teammates gather. Timer hits final seconds.  
+**Camera Transition:** Split-second match: Taj dome silhouette → Aarav’s UI success checkmark.  
+**Close-Up:** Aarav smiles—tear of relief, not triumph.  
+**Text on Screen (FINAL):**  
+**“HACK TIME. BUILD THE IMPOSSIBLE.”**  
+**“TAMU TIDAL HACKATHON — Centuries of ambition, one weekend.”**
+
+**Dialogue:**  
+**AARAV (to team):** “No magic. Just build… together.”

@@ -1,0 +1,95 @@
+{
+  "version": "1.0",
+  "generated_at": "2026-02-07T04:57:42.106960",
+  "creative_brief": {
+    "theme": "Smartphone privacy",
+    "brand_name": "SecurePhone",
+    "target_duration_sec": 30,
+    "aspect_ratio": "16:9",
+    "platform": "youtube",
+    "tone": "professional",
+    "target_audience": "tech users",
+    "key_message": null,
+    "call_to_action": null
+  },
+  "pipeline_stages": {
+    "concept": {
+      "timestamp": "2026-02-07T04:57:42.106963",
+      "output": "Revolutionary privacy-focused smartphone concept"
+    },
+    "screenplay": {
+      "timestamp": "2026-02-07T04:57:42.106964",
+      "style_1": "Rajamouli style screenplay...",
+      "style_2": "Shankar style screenplay...",
+      "winner": "style_1",
+      "selection_method": "manual"
+    },
+    "scenes": [
+      {
+        "scene_number": 1,
+        "duration_sec": 15.0,
+        "visual_description": "Opening",
+        "audio_description": "Music",
+        "text_overlay": "SecurePhone"
+      },
+      {
+        "scene_number": 2,
+        "duration_sec": 15.0,
+        "visual_description": "Features",
+        "audio_description": "Voiceover",
+        "text_overlay": "Privacy First"
+      }
+    ],
+    "storyboard_frames": [
+      {
+        "scene_number": 1,
+        "image_url": "frame1.png",
+        "prompt": "Opening shot",
+        "model": "gemini-2.5-flash-image",
+        "timestamp": "2025-01-01T00:00:00"
+      },
+      {
+        "scene_number": 2,
+        "image_url": "frame2.png",
+        "prompt": "Features shot",
+        "model": "gemini-2.5-flash-image",
+        "timestamp": "2025-01-01T00:00:01"
+      }
+    ],
+    "video_clips": [
+      {
+        "scene_number": 1,
+        "video_url": "clip1.mp4",
+        "duration_sec": 15.0,
+        "model": "veo-3.1",
+        "timestamp": "2025-01-01T00:00:02"
+      },
+      {
+        "scene_number": 2,
+        "video_url": "clip2.mp4",
+        "duration_sec": 15.0,
+        "model": "veo-3.1",
+        "timestamp": "2025-01-01T00:00:03"
+      }
+    ],
+    "final_video": {
+      "url": "output/final/SecurePhone_final.mp4",
+      "duration_sec": 30.0,
+      "aspect_ratio": "16:9",
+      "resolution": "1080p",
+      "timestamp": "2026-02-07T04:57:42.106969"
+    }
+  },
+  "qc_status": "QC_PASSED",
+  "safety_checks": {
+    "concept": "PASSED",
+    "screenplay": "PASSED",
+    "frames": "PASSED",
+    "clips": "PASSED"
+  },
+  "model_versions": {
+    "llm": "gemini-2.0-flash-exp",
+    "image_generation": "gemini-2.5-flash-image",
+    "video_generation": "veo-3.1"
+  }
+}

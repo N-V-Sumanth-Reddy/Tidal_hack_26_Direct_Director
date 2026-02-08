@@ -1,0 +1,72 @@
+## Title: **BUILD TIME**
+**Genre:** Epic fantasy-action drama (Rajamouli-inspired)  
+**Setting:** Present-day TAMU Tidal Hackathon (neon, rain-on-glass, kinetic); Agra, 1630s (warm gold, marble dust, towering scaffolds).  
+**Characters:**  
+- **AARAV**: Hackathon attendee—brilliant, exhausted, stubborn heart.  
+- **EMCEE**: Voice of the “24-hour war drum.”  
+- **USTAD KAMIL**: Master builder—calm, fierce standards, leader of artisans.  
+- **TEAMMATES**: Aarav’s present-day crew—fraying, but loyal.
+
+**Plot Overview:** Aarav’s failing demo triggers a daydream “time machine” via his badge QR. He lands at the Taj Mahal’s construction, helps solve a precision/logistics crisis using modern tools and hackathon thinking, learns the deeper truth—monuments are built by teams who iterate without ego—and returns to ship the prototype.
+
+---
+
+## SCENES (60–90s)
+
+### 1) OPENING SCENE — “24 HOURS”
+**Visuals:** Hackathon hall: LED strips, foggy breath, energy drinks, screens flickering like battle torches.  
+**Action:** Aarav stares at failing code. Teammates argue softly.  
+**Camera Transition:** Whip-pans between countdown timer and Aarav’s trembling cursor.  
+**Close-Up:** Cursor blinks like a heartbeat. Aarav’s lanyard sways.  
+**Text on Screen:** “TAMU TIDAL HACKATHON — 24:00:00”
+
+**Dialogue:**  
+EMCEE (VO, thunderous): “You have 24 hours… to build something impossible.”  
+TEAMMATE: “Our demo’s dead.”  
+AARAV (whisper): “Then we revive it.”
+
+---
+
+### 2) MIDDLE — “BLUEPRINT PORTAL”
+**Visuals:** Badge QR ripples into spinning blueprint lines; laptop fan becomes a deep, temple-like hum. Marble textures flood the screen grid.  
+**Action:** Aarav reaches out—gridlines wrap his fingers like light.  
+**Camera Transition:** Match-cut: laptop vent → swirling dust storm.  
+**Close-Up:** QR code becomes a rotating dome schematic.  
+**Text on Screen:** “COMPILING… 1632”
+
+---
+
+### 3) MIDDLE — “AGRA: THE IMPOSSIBLE BUILD”
+**Visuals:** Taj site alive: elephants hauling stone, artisans inlaying, calligraphy panels lifted by ropes. Half-formed dome like a moon being born.  
+**Action:** Aarav stumbles; Ustad Kamil catches him by the shoulder—steady as granite. Hands him a rolled plan.  
+**Camera Transition:** Crane shot reveals scale; then snap to Aarav’s wide eyes.  
+**Close-Up:** Chalk line trembling; one misalignment threatens a cascade.  
+**Text on Screen:** “AGRA — TAJ UNDER CONSTRUCTION”
+
+**Dialogue (subtitled):**  
+USTAD KAMIL: “A line off by a finger… becomes a flaw for centuries.”  
+AARAV: “In my world, bugs do the same.”
+
+---
+
+### 4) CLIMAX — “DEBUG THE DOME”
+**Visuals:** Night. Torches. Rain begins. The dome frame groans under tension.  
+**Action:** Aarav uses his phone level; draws a modular workflow on the plan—teams re-route materials, re-check symmetry. Artisans mirror his rhythm; he mirrors their precision. A rope snaps—Aarav lunges, braces a beam with a heroic shove as others lock it in.  
+**Camera Transition:** Slow-motion on snapping rope → smash cut to Aarav’s shaking hands steadying.  
+**Close-Up:** Marble dust on Aarav’s badge—present and past fused.  
+**Text on Screen:** “ITERATE. ALIGN. LIFT.”
+
+**Dialogue:**  
+AARAV (to workers): “Small parts. Clear handoffs. One truth.”  
+USTAD KAMIL: “Great works are not born in a day…” (beat) “…they are finished by teams who refuse to stop.”
+
+---
+
+### 5) ENDING — “SHIP IT”
+**Visuals:** Dome silhouette dissolves into the hackathon projector screen curve. Aarav jolts awake at his desk. Countdown: 00:07:30.  
+**Action:** He rewrites the build: strips features, makes modules. Teammates sync—hands flying, no ego. Demo launches—clean. Applause hits like a war victory.  
+**Camera Transition:** Push-in on successful output → pull-out to stage-wide triumph.  
+**Close-Up:** Aarav’s badge: a smear of marble dust… then it’s gone. He smiles—quietly certain.  
+**Text on Screen (End Frame):**  
+**“HACK TIME. BUILD THE IMPOSSIBLE.”**  
+**TAMU TIDAL HACKATHON — Centuries of ambition. One weekend.**

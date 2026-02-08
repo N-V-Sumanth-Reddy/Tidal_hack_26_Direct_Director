@@ -1,0 +1,129 @@
+{
+  "start_time": "2026-02-07T13:50:16.137369",
+  "images_generated": 8,
+  "videos_generated": 10,
+  "total_cost_usd": 3.46,
+  "api_calls": [
+    {
+      "timestamp": 1770493817.67271,
+      "type": "image_generation",
+      "model": "imagen_fast",
+      "cost": 0.02
+    },
+    {
+      "timestamp": 1770493821.888237,
+      "type": "image_generation",
+      "model": "imagen_fast",
+      "cost": 0.02
+    },
+    {
+      "timestamp": 1770493824.999767,
+      "type": "image_generation",
+      "model": "imagen_fast",
+      "cost": 0.02
+    },
+    {
+      "timestamp": 1770493828.3042948,
+      "type": "image_generation",
+      "model": "imagen_fast",
+      "cost": 0.02
+    },
+    {
+      "timestamp": 1770493833.1716402,
+      "type": "image_generation",
+      "model": "imagen_fast",
+      "cost": 0.02
+    },
+    {
+      "timestamp": 1770493837.579519,
+      "type": "image_generation",
+      "model": "imagen_fast",
+      "cost": 0.02
+    },
+    {
+      "timestamp": 1770493841.826089,
+      "type": "image_generation",
+      "model": "imagen_fast",
+      "cost": 0.02
+    },
+    {
+      "timestamp": 1770493846.087931,
+      "type": "image_generation",
+      "model": "imagen_fast",
+      "cost": 0.02
+    },
+    {
+      "timestamp": 1770493849.878916,
+      "type": "video_generation",
+      "model": "veo_3_1",
+      "duration_sec": 6.0,
+      "cost": 0.6000000000000001
+    },
+    {
+      "timestamp": 1770493849.8790069,
+      "type": "video_generation",
+      "model": "veo_3_1",
+      "duration_sec": 5.0,
+      "cost": 0.5
+    },
+    {
+      "timestamp": 1770493849.879044,
+      "type": "video_generation",
+      "model": "veo_3_1",
+      "duration_sec": 6.0,
+      "cost": 0.6000000000000001
+    },
+    {
+      "timestamp": 1770493849.8790731,
+      "type": "video_generation",
+      "model": "veo_3_1",
+      "duration_sec": 5.0,
+      "cost": 0.5
+    },
+    {
+      "timestamp": 1770493849.879099,
+      "type": "video_generation",
+      "model": "veo_3_1",
+      "duration_sec": 5.0,
+      "cost": 0.5
+    },
+    {
+      "timestamp": 1770493849.879123,
+      "type": "video_generation",
+      "model": "veo_3_1",
+      "duration_sec": 3.0,
+      "cost": 0.30000000000000004
+    },
+    {
+      "timestamp": 1770493849.879146,
+      "type": "video_generation",
+      "model": "veo_3_1",
+      "duration_sec": 0.0,
+      "cost": 0.0
+    },
+    {
+      "timestamp": 1770493849.879167,
+      "type": "video_generation",
+      "model": "veo_3_1",
+      "duration_sec": 0.0,
+      "cost": 0.0
+    },
+    {
+      "timestamp": 1770493849.879188,
+      "type": "video_generation",
+      "model": "veo_3_1",
+      "duration_sec": 0.0,
+      "cost": 0.0
+    },
+    {
+      "timestamp": 1770493849.879211,
+      "type": "video_generation",
+      "model": "veo_3_1",
+      "duration_sec": 3.0,
+      "cost": 0.30000000000000004
+    }
+  ],
+  "errors": [],
+  "cached_hits": 2,
+  "end_time": "2026-02-07T13:50:49.879309"
+}

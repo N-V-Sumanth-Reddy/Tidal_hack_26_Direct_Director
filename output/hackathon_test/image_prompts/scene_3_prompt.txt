@@ -1,0 +1,11 @@
+Scene 3 Image Generation Prompt
+======================================================================
+
+Duration: 7.0s
+Text Overlay: AGRA — TAJ UNDER CONSTRUCTION
+
+VISUAL PROMPT:
+Agra, 1630s: warm golden light, marble dust floating in sunbeams. A massive Taj Mahal construction site with towering bamboo/wood scaffolds; elephants hauling stone blocks; artisans inlaying patterns; ropes lifting calligraphy panels. Aarav stumbles into frame in modern clothes; Ustad Kamil steadies him with a firm hand and thrusts a rolled plan into his arms. Close-up of a chalk alignment line trembling, slightly off, threatening a cascading misfit. - TAMU Tidal Hackathon branding
+
+AUDIO DESCRIPTION:
+Ambient: hammering, rope creaks, distant elephant calls. Ustad Kamil (subtitled, calm but stern): "A line off by a finger… becomes a flaw for centuries." Aarav (subtitled): "In my world, bugs do the same."

@@ -1,0 +1,54 @@
+---
+config:
+  flowchart:
+    curve: linear
+---
+graph TD;
+	__start__([<p>__start__</p>]):::first
+	ad_concept_creation_node(ad_concept_creation_node)
+	screen_play_creation_node_1(screen_play_creation_node_1)
+	screen_play_creation_node_2(screen_play_creation_node_2)
+	screenplay_evaluation_node(screenplay_evaluation_node)
+	story_board_creation_node(story_board_creation_node)
+	scene_breakdown_node(scene_breakdown_node)
+	scene_plan_approval_gate(scene_plan_approval_gate)
+	location_planning_node(location_planning_node)
+	budgeting_node(budgeting_node)
+	schedule_ad_node(schedule_ad_node)
+	casting_node(casting_node)
+	props_wardrobe_node(props_wardrobe_node)
+	crew_gear_node(crew_gear_node)
+	legal_clearance_node(legal_clearance_node)
+	risk_safety_node(risk_safety_node)
+	budget_schedule_approval_gate(budget_schedule_approval_gate)
+	client_review_pack_node(client_review_pack_node)
+	__end__([<p>__end__</p>]):::last
+	__start__ --> ad_concept_creation_node;
+	ad_concept_creation_node --> screen_play_creation_node_1;
+	ad_concept_creation_node --> screen_play_creation_node_2;
+	budget_schedule_approval_gate --> client_review_pack_node;
+	budgeting_node --> budget_schedule_approval_gate;
+	casting_node --> budget_schedule_approval_gate;
+	crew_gear_node --> budget_schedule_approval_gate;
+	legal_clearance_node --> budget_schedule_approval_gate;
+	location_planning_node --> budget_schedule_approval_gate;
+	props_wardrobe_node --> budget_schedule_approval_gate;
+	risk_safety_node --> budget_schedule_approval_gate;
+	scene_breakdown_node --> scene_plan_approval_gate;
+	scene_plan_approval_gate --> budgeting_node;
+	scene_plan_approval_gate --> casting_node;
+	scene_plan_approval_gate --> crew_gear_node;
+	scene_plan_approval_gate --> legal_clearance_node;
+	scene_plan_approval_gate --> location_planning_node;
+	scene_plan_approval_gate --> props_wardrobe_node;
+	scene_plan_approval_gate --> risk_safety_node;
+	scene_plan_approval_gate --> schedule_ad_node;
+	schedule_ad_node --> budget_schedule_approval_gate;
+	screen_play_creation_node_1 --> screenplay_evaluation_node;
+	screen_play_creation_node_2 --> screenplay_evaluation_node;
+	screenplay_evaluation_node --> story_board_creation_node;
+	story_board_creation_node --> scene_breakdown_node;
+	client_review_pack_node --> __end__;
+	classDef default fill:#f2f0ff,line-height:1.2
+	classDef first fill-opacity:0
+	classDef last fill:#bfb6fc

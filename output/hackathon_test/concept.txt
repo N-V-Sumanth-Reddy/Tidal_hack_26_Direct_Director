@@ -1,0 +1,65 @@
+## Ad Concept: **“Build Time”**  
+**Theme:** A TAMU Tidal Hackathon attendee daydreams into a time-travel “machine” and lands at the Taj Mahal during its construction.
+
+### The Big Idea  
+Turn “time travel” into a metaphor for what hacking really does: **compress centuries of progress into a weekend**. The attendee doesn’t just visit history—they *collaborate with it*, realizing that the Taj Mahal wasn’t magic; it was an audacious build powered by people, planning, iteration, and obsession with craft—exactly what a hackathon is.
+
+---
+
+## Story / Film (60–90s Hero Spot)
+**Open (Present Day, TAMU Tidal Hackathon):**  
+A sleep-deprived attendee stares at their laptop: CAD mockups, code, a failing demo. The stage lights blur. The emcee says, “You’ve got 24 hours to build something impossible.”
+
+**The “Machine”:**  
+Their **conference badge lanyard** swings like a pendulum. The badge QR code glitches and becomes a swirling blueprint animation. The laptop fan whirs into a low “portal” hum. The screen fills with white marble textures and gridlines—like a 3D model rendering that becomes real.
+
+**Cut to (Agra, 1630s—Taj under construction):**  
+They stumble onto a bustling construction site: scaffolding, brick cores, marble inlay work, calligraphy panels being positioned. A master builder hands them a rolled plan—visual language parallels a hackathon spec doc.
+
+**The Twist (Collaboration Across Time):**  
+They start “debugging” the build: pointing out alignment using their phone’s level, sketching a workflow, helping solve a logistics bottleneck. In return, the artisans show them craftsmanship principles: precision, patience, iteration, systems thinking.
+
+**Climax:**  
+A half-finished dome silhouette matches the hackathon attendee’s unfinished prototype back at TAMU. The builder says (subtitled):  
+“Great works aren’t finished in a day. They’re finished by teams who refuse to stop.”
+
+**Return (Present Day):**  
+They snap awake. Their prototype is still broken—until they reframe it with what they learned: simplify, modularize, iterate. The demo finally runs.
+
+**End Frame / Tagline:**  
+**“Hack Time. Build the Impossible.”**  
+*TAMU Tidal Hackathon — Where centuries of ambition fit in a weekend.*
+
+---
+
+## Fresh Visual Hook (Key Novel Element)
+### **“Blueprint-Portal UX”**
+The time machine isn’t a DeLorean or sci‑fi device. It’s a **hackathon interface**:  
+- QR badge → spinning parametric blueprint  
+- Laptop fan + fluorescent lights → “portal” sound design  
+- UI gridlines overlay onto real-world scaffolding  
+This makes it feel native to the hackathon world and avoids cliché time-travel tropes.
+
+---
+
+## Why This Works (Justification)
+1. **Emotionally sticky contrast:** fluorescent hackathon chaos vs. monumental historical build creates instant awe.  
+2. **Reframes history as engineering:** Taj Mahal construction becomes a parallel to shipping a prototype—planning, material constraints, iteration, collaboration.  
+3. **Aspirational identity message:** attendees aren’t just students; they’re part of a lineage of builders.  
+4. **Ownable metaphor:** “time travel” = “innovation acceleration,” a clean takeaway for an event brand.
+
+---
+
+## Campaign Extensions (Optional but Strong)
+- **Poster series:** “1632: Shipping v1 of the Dome.” / “Debugging the Marble Inlay.”  
+- **AR filter onsite:** point camera at your badge → Taj scaffolding overlays onto the venue.  
+- **Swag line:** lanyards printed like Mughal geometric grids; stickers: **“Built in 24 Hours (Spiritually).”**
+
+---
+
+## Tagline Options
+- **Hack Time. Build the Impossible.** (primary)  
+- **Where Builders Meet Across Centuries.**  
+- **From Prototype to Monument.**  
+
+If you tell me the target medium (film, print, social, or on-site experiential) and time limit (15s/30s/60s), I can tighten this into a finished script + shot list.

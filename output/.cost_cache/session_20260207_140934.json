@@ -1,0 +1,47 @@
+{
+  "start_time": "2026-02-07T14:09:34.807806",
+  "images_generated": 6,
+  "videos_generated": 0,
+  "total_cost_usd": 0.12000000000000001,
+  "api_calls": [
+    {
+      "timestamp": 1770495094.202256,
+      "type": "image_generation",
+      "model": "imagen_fast",
+      "cost": 0.02
+    },
+    {
+      "timestamp": 1770495098.419399,
+      "type": "image_generation",
+      "model": "imagen_fast",
+      "cost": 0.02
+    },
+    {
+      "timestamp": 1770495102.4686458,
+      "type": "image_generation",
+      "model": "imagen_fast",
+      "cost": 0.02
+    },
+    {
+      "timestamp": 1770495106.56945,
+      "type": "image_generation",
+      "model": "imagen_fast",
+      "cost": 0.02
+    },
+    {
+      "timestamp": 1770495109.955872,
+      "type": "image_generation",
+      "model": "imagen_fast",
+      "cost": 0.02
+    },
+    {
+      "timestamp": 1770495113.646324,
+      "type": "image_generation",
+      "model": "imagen_fast",
+      "cost": 0.02
+    }
+  ],
+  "errors": [],
+  "cached_hits": 0,
+  "end_time": "2026-02-07T14:11:58.230542"
+}

@@ -1,0 +1,11 @@
+Scene 1 Image Generation Prompt
+======================================================================
+
+Duration: 6.0s
+Text Overlay: TAMU TIDAL HACKATHON — 24:00:00
+
+VISUAL PROMPT:
+Present-day hackathon hall at TAMU Tidal Hackathon: neon LED strips, rain streaks on tall windows, vapor/fog in the air, rows of laptops like glowing battle stations. Close-up of Aarav’s exhausted face lit by code; energy drinks and cables scattered. Whip-pan between a giant countdown timer and a blinking cursor on his screen; his lanyard/badge sways as teammates hover, tense and whisper-arguing behind him. - TAMU Tidal Hackathon branding
+
+AUDIO DESCRIPTION:
+EMCEE (VO, thunderous arena tone): "You have 24 hours… to build something impossible." Underneath: keyboard clacks, distant cheers, low bass rumble. Teammate (hushed): "Our demo’s dead." Aarav (whisper): "Then we revive it."

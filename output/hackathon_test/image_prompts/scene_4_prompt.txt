@@ -1,0 +1,11 @@
+Scene 4 Image Generation Prompt
+======================================================================
+
+Duration: 7.0s
+Text Overlay: ITERATE. ALIGN. LIFT.
+
+VISUAL PROMPT:
+Night on the build: torches flicker, rain begins, the dome framework groans under tension. Aarav pulls out his phone and uses a level app; overlays of glowing gridlines align with the dome ribs. He sketches a modular workflow directly onto the plan; teams re-route materials in synchronized motion. A rope snaps in slow motion; Aarav lunges and braces a beam with a heroic shove as workers lock it in place. Close-up: marble dust clings to his hackathon badge, blending eras. - TAMU Tidal Hackathon branding
+
+AUDIO DESCRIPTION:
+Rising percussion, rain hiss on stone, rope twang then SNAP. Aarav (urgent): "Small parts. Clear handoffs. One truth." Ustad Kamil (resolute): "Great works are not born in a day… they are finished by teams who refuse to stop."

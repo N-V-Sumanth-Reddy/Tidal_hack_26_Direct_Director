@@ -1,0 +1,11 @@
+Scene 5 Image Generation Prompt
+======================================================================
+
+Duration: 5.0s
+Text Overlay: 
+
+VISUAL PROMPT:
+The dome silhouette dissolves into a curved projector screen back at TAMU Tidal Hackathon. Aarav jolts at his desk; timer reads 00:07:30. Rapid montage: he strips features, snaps code into clean modules; teammates lean in and sync—hands flying over keyboard, trackpad, and sticky notes—no arguing, just coordinated execution. The demo runs flawlessly on the big screen. - TAMU Tidal Hackathon branding
+
+AUDIO DESCRIPTION:
+Hard cut back to hackathon ambience: countdown beeps, fast typing, controlled breathing. Aarav: "Ship the core. Lock the handoffs." A clean success chime hits as the app output loads.

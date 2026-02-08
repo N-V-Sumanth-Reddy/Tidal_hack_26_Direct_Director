@@ -1,0 +1,11 @@
+Scene 2 Image Generation Prompt
+======================================================================
+
+Duration: 5.0s
+Text Overlay: COMPILING… 1632
+
+VISUAL PROMPT:
+Extreme close-up of Aarav’s badge QR code. The QR ripples like liquid and morphs into spinning blueprint lines; cyan schematic grids crawl across his hands as he reaches forward. Match-cut from laptop vent spinning fan to a swirling dust vortex, as marble textures and architectural linework flood the frame. - TAMU Tidal Hackathon branding
+
+AUDIO DESCRIPTION:
+Laptop fan rises into a deep, temple-like hum; crackling electric whoosh. Heartbeat-like thump synced to the rotating schematic.

@@ -1,0 +1,44 @@
+[
+  {
+    "scene_number": 1,
+    "prompt": "Present-day hackathon hall at TAMU Tidal Hackathon: neon LED strips, rain streaks on tall windows, vapor/fog in the air, rows of laptops like glowing battle stations. Close-up of Aarav\u2019s exhausted face lit by code; energy drinks and cables scattered. Whip-pan between a giant countdown timer and a blinking cursor on his screen; his lanyard/badge sways as teammates hover, tense and whisper-arguing behind him. - TAMU Tidal Hackathon branding",
+    "duration_sec": 6.0,
+    "text_overlay": "TAMU TIDAL HACKATHON \u2014 24:00:00",
+    "audio_description": "EMCEE (VO, thunderous arena tone): \"You have 24 hours\u2026 to build something impossible.\" Underneath: keyboard clacks, distant cheers, low bass rumble. Teammate (hushed): \"Our demo\u2019s dead.\" Aarav (whisper): \"Then we revive it.\""
+  },
+  {
+    "scene_number": 2,
+    "prompt": "Extreme close-up of Aarav\u2019s badge QR code. The QR ripples like liquid and morphs into spinning blueprint lines; cyan schematic grids crawl across his hands as he reaches forward. Match-cut from laptop vent spinning fan to a swirling dust vortex, as marble textures and architectural linework flood the frame. - TAMU Tidal Hackathon branding",
+    "duration_sec": 5.0,
+    "text_overlay": "COMPILING\u2026 1632",
+    "audio_description": "Laptop fan rises into a deep, temple-like hum; crackling electric whoosh. Heartbeat-like thump synced to the rotating schematic."
+  },
+  {
+    "scene_number": 3,
+    "prompt": "Agra, 1630s: warm golden light, marble dust floating in sunbeams. A massive Taj Mahal construction site with towering bamboo/wood scaffolds; elephants hauling stone blocks; artisans inlaying patterns; ropes lifting calligraphy panels. Aarav stumbles into frame in modern clothes; Ustad Kamil steadies him with a firm hand and thrusts a rolled plan into his arms. Close-up of a chalk alignment line trembling, slightly off, threatening a cascading misfit. - TAMU Tidal Hackathon branding",
+    "duration_sec": 7.0,
+    "text_overlay": "AGRA \u2014 TAJ UNDER CONSTRUCTION",
+    "audio_description": "Ambient: hammering, rope creaks, distant elephant calls. Ustad Kamil (subtitled, calm but stern): \"A line off by a finger\u2026 becomes a flaw for centuries.\" Aarav (subtitled): \"In my world, bugs do the same.\""
+  },
+  {
+    "scene_number": 4,
+    "prompt": "Night on the build: torches flicker, rain begins, the dome framework groans under tension. Aarav pulls out his phone and uses a level app; overlays of glowing gridlines align with the dome ribs. He sketches a modular workflow directly onto the plan; teams re-route materials in synchronized motion. A rope snaps in slow motion; Aarav lunges and braces a beam with a heroic shove as workers lock it in place. Close-up: marble dust clings to his hackathon badge, blending eras. - TAMU Tidal Hackathon branding",
+    "duration_sec": 7.0,
+    "text_overlay": "ITERATE. ALIGN. LIFT.",
+    "audio_description": "Rising percussion, rain hiss on stone, rope twang then SNAP. Aarav (urgent): \"Small parts. Clear handoffs. One truth.\" Ustad Kamil (resolute): \"Great works are not born in a day\u2026 they are finished by teams who refuse to stop.\""
+  },
+  {
+    "scene_number": 5,
+    "prompt": "The dome silhouette dissolves into a curved projector screen back at TAMU Tidal Hackathon. Aarav jolts at his desk; timer reads 00:07:30. Rapid montage: he strips features, snaps code into clean modules; teammates lean in and sync\u2014hands flying over keyboard, trackpad, and sticky notes\u2014no arguing, just coordinated execution. The demo runs flawlessly on the big screen. - TAMU Tidal Hackathon branding",
+    "duration_sec": 5.0,
+    "text_overlay": "",
+    "audio_description": "Hard cut back to hackathon ambience: countdown beeps, fast typing, controlled breathing. Aarav: \"Ship the core. Lock the handoffs.\" A clean success chime hits as the app output loads."
+  },
+  {
+    "scene_number": 6,
+    "prompt": "Stage-wide moment: applause in the hackathon hall. Close-up of Aarav\u2019s badge\u2014tiny smear of marble dust visible for a beat, then gone. He gives a quiet, certain smile as the camera pulls back to the glowing event space. - TAMU Tidal Hackathon branding",
+    "duration_sec": 2.0,
+    "text_overlay": "HACK TIME. BUILD THE IMPOSSIBLE.\nTAMU TIDAL HACKATHON \u2014 Centuries of ambition. One weekend.",
+    "audio_description": "Applause swells like a victory roar; music resolves into an uplifting final hit."
+  }
+]

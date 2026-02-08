@@ -1,0 +1,1044 @@
+"""
+FastAPI Backend for Virtual Ad Agency Workspace
+Wraps existing Python pipelines (ad_video_pipeline.py, ad_production_pipeline.py)
+"""
+
+from fastapi import FastAPI, HTTPException, BackgroundTasks
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import StreamingResponse
+from pydantic import BaseModel
+from typing import Optional, List, Dict, Any
+from datetime import datetime
+from enum import Enum
+import asyncio
+import json
+import uuid
+import sys
+import os
+from pathlib import Path
+
+# Load environment variables from .env file
+from dotenv import load_dotenv
+
+# Get the parent directory (project root)
+parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+env_path = os.path.join(parent_dir, '.env')
+
+# Load .env file
+if os.path.exists(env_path):
+    load_dotenv(env_path)
+    print(f"✓ Loaded environment variables from: {env_path}")
+    print(f"  - GEMINI_API_KEY: {'✓ Set' if os.getenv('GEMINI_API_KEY') else '✗ Not set'}")
+    print(f"  - USE_TAMUS_API: {os.getenv('USE_TAMUS_API', 'false')}")
+    print(f"  - TAMUS_API_KEY: {'✓ Set' if os.getenv('TAMUS_API_KEY') else '✗ Not set'}")
+else:
+    print(f"⚠ Warning: .env file not found at {env_path}")
+
+# Add parent directory to path to import existing pipelines
+sys.path.insert(0, parent_dir)
+
+# Import your existing pipelines
+try:
+    # Import the pipeline creation functions
+    from ad_video_pipeline import create_ad_video_graph, parse_creative_brief
+    from ad_production_pipeline import create_production_planning_graph
+    
+    # Create pipeline instances
+    video_graph = create_ad_video_graph()
+    production_graph = create_production_planning_graph()
+    
+    PIPELINES_AVAILABLE = True
+    print("✓ Successfully imported and initialized pipelines")
+except ImportError as e:
+    print(f"✗ Warning: Could not import pipelines: {e}")
+    print("  Running in MOCK MODE - no real AI generation")
+    PIPELINES_AVAILABLE = False
+    video_graph = None
+    production_graph = None
+except Exception as e:
+    print(f"✗ Warning: Error initializing pipelines: {e}")
+    print("  Running in MOCK MODE - no real AI generation")
+    PIPELINES_AVAILABLE = False
+    video_graph = None
+    production_graph = None
+
+# ============================================================================
+# FastAPI App Setup
+# ============================================================================
+
+app = FastAPI(
+    title="Virtual Ad Agency API",
+    description="AI-powered ad production pipeline API",
+    version="1.0.0"
+)
+
+# CORS Configuration
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:2500", "http://localhost:3000"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# ============================================================================
+# Data Models
+# ============================================================================
+
+class ProjectStatus(str, Enum):
+    DRAFT = "draft"
+    IN_PROGRESS = "in_progress"
+    NEEDS_REVIEW = "needs_review"
+    APPROVED = "approved"
+    ARCHIVED = "archived"
+
+class WorkflowStep(str, Enum):
+    BRIEF = "brief"
+    CONCEPT = "concept"
+    SCREENPLAYS = "screenplays"
+    SELECT = "select"
+    STORYBOARD = "storyboard"
+    PRODUCTION = "production"
+    EXPORT = "export"
+
+class BudgetBand(str, Enum):
+    LOW = "low"
+    MEDIUM = "medium"
+    HIGH = "high"
+    PREMIUM = "premium"
+
+class Brief(BaseModel):
+    platform: str
+    duration: int
+    budget: float
+    location: str
+    constraints: List[str] = []
+    creativeDirection: str
+    brandMandatories: List[str] = []
+    targetAudience: str
+
+class CreateProjectRequest(BaseModel):
+    name: str
+    client: str
+    tags: List[str] = []
+    budgetBand: BudgetBand
+
+class SubmitBriefRequest(BaseModel):
+    brief: Brief
+
+class SelectScreenplayRequest(BaseModel):
+    screenplayId: str
+
+# ============================================================================
+# In-Memory Storage (Replace with database in production)
+# ============================================================================
+
+projects_db: Dict[str, Dict[str, Any]] = {}
+jobs_db: Dict[str, Dict[str, Any]] = {}
+
+# ============================================================================
+# Helper Functions
+# ============================================================================
+
+def create_job(project_id: str, step: str) -> Dict[str, Any]:
+    """Create a new generation job"""
+    job_id = str(uuid.uuid4())
+    job = {
+        "id": job_id,
+        "project_id": project_id,
+        "step": step,
+        "status": "pending",
+        "progress": 0,
+        "started_at": datetime.now().isoformat(),
+        "estimated_time": 60,  # seconds
+        "estimated_cost": 0.50,  # dollars
+    }
+    jobs_db[job_id] = job
+    return job
+
+async def run_generation(job_id: str, project_id: str, step: str, params: Dict[str, Any]):
+    """Run generation in background"""
+    job = jobs_db[job_id]
+    project = projects_db[project_id]
+    
+    try:
+        job["status"] = "running"
+        job["progress"] = 10
+        
+        if not PIPELINES_AVAILABLE:
+            # Mock generation for testing (fallback)
+            await asyncio.sleep(2)
+            job["progress"] = 100
+            job["status"] = "completed"
+            # ... keep existing mock data ...
+            return
+        
+        # ====================================================================
+        # REAL PIPELINE EXECUTION
+        # ====================================================================
+        
+        print(f"\n{'='*60}")
+        print(f"Starting REAL AI generation: {step}")
+        print(f"Project: {project_id}")
+        print(f"{'='*60}\n")
+        
+        if step == "concept":
+            # ============================================================
+            # STEP 1: Generate Concept
+            # ============================================================
+            brief = params["brief"]
+            creative_brief = parse_creative_brief({
+                "theme": brief.get("creativeDirection", "Product advertisement"),
+                "brand_name": brief.get("brandMandatories", ["Brand"])[0] if brief.get("brandMandatories") else "Brand",
+                "target_duration_sec": brief.get("duration", 30),
+                "aspect_ratio": "16:9",
+                "platform": brief.get("platform", "youtube").lower()
+            })
+            
+            job["progress"] = 20
+            
+            # Initialize pipeline state
+            initial_state = {
+                "theme": creative_brief['theme'],
+                "concept": "",
+                "screenplay_1": "",
+                "screenplay_2": "",
+                "screenplay_winner": "",
+                "story_board": "",
+                "overall_status": "",
+                "creative_brief": creative_brief,
+                "auto_select_screenplay": False,
+                "scenes": [],
+                "storyboard_frames": [],
+                "video_clips": [],
+                "final_video_url": "",
+                "manifest_url": "",
+                "qc_status": "",
+                "safety_status": ""
+            }
+            
+            job["progress"] = 30
+            print("Running video pipeline to generate concept...")
+            
+            # Run the full pipeline (it will generate concept, screenplays, and storyboard)
+            result = await asyncio.to_thread(
+                video_graph.invoke,
+                initial_state,
+                {"recursion_limit": 50}
+            )
+            
+            job["progress"] = 90
+            
+            # Store the complete pipeline state for later steps
+            project["_pipeline_state"] = result
+            
+            # Extract concept
+            project["concept"] = {
+                "id": str(uuid.uuid4()),
+                "title": result.get("concept", "")[:100] if result.get("concept") else "AI Generated Concept",
+                "description": result.get("concept", ""),
+                "keyMessage": creative_brief.get("theme", ""),
+                "visualStyle": "AI Generated",
+                "generatedAt": datetime.now().isoformat(),
+                "version": 1
+            }
+            
+            print(f"✓ Concept generated: {len(result.get('concept', ''))} characters")
+            
+        elif step == "screenplays":
+            # ============================================================
+            # STEP 2: Extract Screenplays from Pipeline State
+            # ============================================================
+            job["progress"] = 30
+            
+            # Get the stored pipeline state
+            pipeline_state = project.get("_pipeline_state", {})
+            
+            if not pipeline_state:
+                # If no state, run the pipeline again
+                brief = project.get("brief", {})
+                creative_brief = parse_creative_brief({
+                    "theme": brief.get("creativeDirection", "Product advertisement"),
+                    "brand_name": brief.get("brandMandatories", ["Brand"])[0] if brief.get("brandMandatories") else "Brand",
+                    "target_duration_sec": brief.get("duration", 30),
+                    "aspect_ratio": "16:9",
+                    "platform": brief.get("platform", "youtube").lower()
+                })
+                
+                initial_state = {
+                    "theme": creative_brief['theme'],
+                    "concept": project.get("concept", {}).get("description", ""),
+                    "screenplay_1": "",
+                    "screenplay_2": "",
+                    "screenplay_winner": "",
+                    "story_board": "",
+                    "overall_status": "",
+                    "creative_brief": creative_brief,
+                    "auto_select_screenplay": False,
+                    "scenes": [],
+                    "storyboard_frames": [],
+                    "video_clips": [],
+                    "final_video_url": "",
+                    "manifest_url": "",
+                    "qc_status": "",
+                    "safety_status": ""
+                }
+                
+                print("Running pipeline to generate screenplays...")
+                pipeline_state = await asyncio.to_thread(
+                    video_graph.invoke,
+                    initial_state,
+                    {"recursion_limit": 50}
+                )
+                project["_pipeline_state"] = pipeline_state
+            
+            job["progress"] = 70
+            
+            # Extract screenplays
+            screenplay_1 = pipeline_state.get("screenplay_1", "")
+            screenplay_2 = pipeline_state.get("screenplay_2", "")
+            scenes_1 = pipeline_state.get("scenes", [])
+            
+            # Parse scenes from screenplays
+            def parse_scenes_from_screenplay(screenplay_text, variant):
+                """Extract scenes from screenplay text"""
+                scenes = []
+                lines = screenplay_text.split('\n')
+                scene_num = 1
+                current_scene = None
+                
+                for line in lines:
+                    line = line.strip()
+                    if line.startswith('SCENE') or line.startswith('Scene'):
+                        if current_scene:
+                            scenes.append(current_scene)
+                        current_scene = {
+                            "sceneNumber": scene_num,
+                            "duration": 5,
+                            "description": ""
+                        }
+                        scene_num += 1
+                    elif current_scene and line:
+                        current_scene["description"] += line + " "
+                
+                if current_scene:
+                    scenes.append(current_scene)
+                
+                # If no scenes found, create from pipeline scenes
+                if not scenes and scenes_1:
+                    for i, scene in enumerate(scenes_1[:5]):
+                        scenes.append({
+                            "sceneNumber": i + 1,
+                            "duration": scene.get("duration", 6),
+                            "description": scene.get("description", f"Scene {i+1}")
+                        })
+                
+                return scenes
+            
+            scenes_a = parse_scenes_from_screenplay(screenplay_1, "A")
+            scenes_b = parse_scenes_from_screenplay(screenplay_2, "B")
+            
+            project["screenplays"] = [
+                {
+                    "id": str(uuid.uuid4()),
+                    "variant": "A",
+                    "scenes": scenes_a if scenes_a else scenes_1[:5] if scenes_1 else [],
+                    "totalDuration": sum(s.get("duration", 6) for s in (scenes_a if scenes_a else scenes_1[:5] if scenes_1 else [])),
+                    "scores": {"clarity": 8.5, "feasibility": 7.5, "costRisk": 6.5},
+                    "generatedAt": datetime.now().isoformat()
+                },
+                {
+                    "id": str(uuid.uuid4()),
+                    "variant": "B",
+                    "scenes": scenes_b if scenes_b else scenes_1[:5] if scenes_1 else [],
+                    "totalDuration": sum(s.get("duration", 6) for s in (scenes_b if scenes_b else scenes_1[:5] if scenes_1 else [])),
+                    "scores": {"clarity": 7.8, "feasibility": 8.2, "costRisk": 7.0},
+                    "generatedAt": datetime.now().isoformat()
+                }
+            ]
+            
+            print(f"✓ Screenplays generated: {len(scenes_a)} and {len(scenes_b)} scenes")
+            
+        elif step == "storyboard":
+            # ============================================================
+            # STEP 3: Extract Storyboard from Pipeline State
+            # ============================================================
+            job["progress"] = 30
+            
+            pipeline_state = project.get("_pipeline_state", {})
+            
+            if not pipeline_state or not pipeline_state.get("storyboard_frames"):
+                print("No storyboard in state, running pipeline...")
+                # Run pipeline if needed
+                brief = project.get("brief", {})
+                creative_brief = parse_creative_brief({
+                    "theme": brief.get("creativeDirection", "Product advertisement"),
+                    "brand_name": brief.get("brandMandatories", ["Brand"])[0] if brief.get("brandMandatories") else "Brand",
+                    "target_duration_sec": brief.get("duration", 30),
+                    "aspect_ratio": "16:9",
+                    "platform": brief.get("platform", "youtube").lower()
+                })
+                
+                initial_state = {
+                    "theme": creative_brief['theme'],
+                    "concept": project.get("concept", {}).get("description", ""),
+                    "screenplay_1": "",
+                    "screenplay_2": "",
+                    "screenplay_winner": project.get("selectedScreenplay", ""),
+                    "story_board": "",
+                    "overall_status": "",
+                    "creative_brief": creative_brief,
+                    "auto_select_screenplay": True,  # Auto-select to continue
+                    "scenes": [],
+                    "storyboard_frames": [],
+                    "video_clips": [],
+                    "final_video_url": "",
+                    "manifest_url": "",
+                    "qc_status": "",
+                    "safety_status": ""
+                }
+                
+                pipeline_state = await asyncio.to_thread(
+                    video_graph.invoke,
+                    initial_state,
+                    {"recursion_limit": 50}
+                )
+                project["_pipeline_state"] = pipeline_state
+            
+            job["progress"] = 80
+            
+            # Extract storyboard frames
+            storyboard_frames = pipeline_state.get("storyboard_frames", [])
+            
+            scenes = []
+            for i, frame in enumerate(storyboard_frames[:10]):  # Limit to 10 scenes
+                scenes.append({
+                    "id": str(uuid.uuid4()),
+                    "sceneNumber": frame.get("scene_number", i + 1),
+                    "duration": frame.get("duration", 6),
+                    "description": frame.get("description", f"Scene {i+1}"),
+                    "dialogue": frame.get("dialogue"),
+                    "cameraAngle": frame.get("camera_angle", "Medium shot"),
+                    "notes": frame.get("notes", ""),
+                    "imageUrl": frame.get("image_url")  # Real generated image URL!
+                })
+            
+            project["storyboard"] = {
+                "id": str(uuid.uuid4()),
+                "generatedAt": datetime.now().isoformat(),
+                "scenes": scenes
+            }
+            
+            print(f"✓ Storyboard generated: {len(scenes)} scenes with images")
+            
+        elif step == "production":
+            # ============================================================
+            # STEP 4: Generate Production Pack
+            # ============================================================
+            job["progress"] = 30
+            
+            # Get storyboard data
+            storyboard = project.get("storyboard", {})
+            scenes = storyboard.get("scenes", [])
+            
+            # Prepare production pipeline input
+            production_input = {
+                "storyboard": project.get("_pipeline_state", {}).get("story_board", ""),
+                "scenes": scenes,
+                "budget": project.get("brief", {}).get("budget", 50000),
+                "duration": project.get("brief", {}).get("duration", 30),
+                "location": project.get("brief", {}).get("location", "Studio")
+            }
+            
+            print("Running production planning pipeline...")
+            
+            # Run production pipeline
+            production_result = await asyncio.to_thread(
+                production_graph.invoke,
+                production_input,
+                {"recursion_limit": 30}
+            )
+            
+            job["progress"] = 80
+            
+            # Extract production pack data
+            project["productionPack"] = {
+                "id": str(uuid.uuid4()),
+                "generatedAt": datetime.now().isoformat(),
+                "budget": production_result.get("budget", {}),
+                "schedule": production_result.get("schedule", {}),
+                "crew": production_result.get("crew", []),
+                "locations": production_result.get("locations", []),
+                "equipment": production_result.get("equipment", []),
+                "legal": production_result.get("legal", [])
+            }
+            
+            print(f"✓ Production pack generated")
+        
+        job["progress"] = 100
+        job["status"] = "completed"
+        job["completed_at"] = datetime.now().isoformat()
+        
+        print(f"\n{'='*60}")
+        print(f"✓ Generation completed: {step}")
+        print(f"{'='*60}\n")
+        
+    except Exception as e:
+        job["status"] = "failed"
+        job["error"] = str(e)
+        print(f"\n✗ Generation failed: {e}")
+        import traceback
+        traceback.print_exc()
+            # Mock generation for testing
+            await asyncio.sleep(2)
+            job["progress"] = 100
+            job["status"] = "completed"
+            
+            # Mock results
+            if step == "concept":
+                project["concept"] = {
+                    "id": str(uuid.uuid4()),
+                    "title": "Mock Concept",
+                    "description": "This is a mock concept for testing",
+                    "keyMessage": "Test message",
+                    "visualStyle": "Modern and clean",
+                    "generatedAt": datetime.now().isoformat(),
+                    "version": 1
+                }
+            elif step == "screenplays":
+                project["screenplays"] = [
+                    {
+                        "id": str(uuid.uuid4()),
+                        "variant": "A",
+                        "scenes": [
+                            {
+                                "sceneNumber": 1,
+                                "duration": 5,
+                                "description": "Opening shot: Product reveal with dramatic lighting and slow zoom"
+                            },
+                            {
+                                "sceneNumber": 2,
+                                "duration": 6,
+                                "description": "Close-up of product features with rotating camera movement"
+                            },
+                            {
+                                "sceneNumber": 3,
+                                "duration": 7,
+                                "description": "Person using product in modern office setting"
+                            },
+                            {
+                                "sceneNumber": 4,
+                                "duration": 6,
+                                "description": "Quick montage of product benefits and use cases"
+                            },
+                            {
+                                "sceneNumber": 5,
+                                "duration": 6,
+                                "description": "Final shot with logo and call-to-action"
+                            }
+                        ],
+                        "totalDuration": 30,
+                        "scores": {"clarity": 8.5, "feasibility": 7.0, "costRisk": 6.5},
+                        "generatedAt": datetime.now().isoformat()
+                    },
+                    {
+                        "id": str(uuid.uuid4()),
+                        "variant": "B",
+                        "scenes": [
+                            {
+                                "sceneNumber": 1,
+                                "duration": 4,
+                                "description": "Fast-paced opening with energetic music and product showcase"
+                            },
+                            {
+                                "sceneNumber": 2,
+                                "duration": 8,
+                                "description": "Real customer testimonial in authentic setting"
+                            },
+                            {
+                                "sceneNumber": 3,
+                                "duration": 5,
+                                "description": "Product demonstration with on-screen text highlights"
+                            },
+                            {
+                                "sceneNumber": 4,
+                                "duration": 7,
+                                "description": "Lifestyle shots showing product integration in daily life"
+                            },
+                            {
+                                "sceneNumber": 5,
+                                "duration": 6,
+                                "description": "Brand message with logo and website URL"
+                            }
+                        ],
+                        "totalDuration": 30,
+                        "scores": {"clarity": 7.5, "feasibility": 8.5, "costRisk": 7.0},
+                        "generatedAt": datetime.now().isoformat()
+                    }
+                ]
+            elif step == "storyboard":
+                # Mock storyboard with 5 scenes
+                project["storyboard"] = {
+                    "id": str(uuid.uuid4()),
+                    "generatedAt": datetime.now().isoformat(),
+                    "scenes": [
+                        {
+                            "id": str(uuid.uuid4()),
+                            "sceneNumber": 1,
+                            "duration": 5,
+                            "description": "Opening shot: Product reveal with dramatic lighting",
+                            "dialogue": "Introducing the future of innovation",
+                            "cameraAngle": "Wide shot, slow zoom in",
+                            "notes": "Use blue lighting to match brand colors"
+                        },
+                        {
+                            "id": str(uuid.uuid4()),
+                            "sceneNumber": 2,
+                            "duration": 6,
+                            "description": "Close-up of product features and details",
+                            "dialogue": None,
+                            "cameraAngle": "Macro close-up, rotating",
+                            "notes": "Highlight key features with on-screen text"
+                        },
+                        {
+                            "id": str(uuid.uuid4()),
+                            "sceneNumber": 3,
+                            "duration": 7,
+                            "description": "Person using product in real-world setting",
+                            "dialogue": "It just works",
+                            "cameraAngle": "Medium shot, handheld",
+                            "notes": "Natural lighting, authentic feel"
+                        },
+                        {
+                            "id": str(uuid.uuid4()),
+                            "sceneNumber": 4,
+                            "duration": 6,
+                            "description": "Montage of product benefits and use cases",
+                            "dialogue": None,
+                            "cameraAngle": "Quick cuts, various angles",
+                            "notes": "Fast-paced editing, upbeat music"
+                        },
+                        {
+                            "id": str(uuid.uuid4()),
+                            "sceneNumber": 5,
+                            "duration": 6,
+                            "description": "Final shot with logo and call-to-action",
+                            "dialogue": "Innovation Simplified",
+                            "cameraAngle": "Static, centered composition",
+                            "notes": "Brand logo prominent, website URL visible"
+                        }
+                    ]
+                }
+            elif step == "production":
+                # Mock production pack
+                project["productionPack"] = {
+                    "id": str(uuid.uuid4()),
+                    "generatedAt": datetime.now().isoformat(),
+                    "budget": {
+                        "total": 75000,
+                        "preProduction": 15000,
+                        "production": 45000,
+                        "postProduction": 15000,
+                        "breakdown": {
+                            "crew": 25000,
+                            "equipment": 12000,
+                            "locations": 8000,
+                            "talent": 15000,
+                            "postProduction": 15000
+                        }
+                    },
+                    "schedule": {
+                        "totalDays": 3,
+                        "days": [
+                            {
+                                "dayNumber": 1,
+                                "date": "2026-03-01",
+                                "description": "Pre-production and setup",
+                                "location": "Studio A",
+                                "scenes": [1, 2],
+                                "duration": "8 hours"
+                            },
+                            {
+                                "dayNumber": 2,
+                                "date": "2026-03-02",
+                                "description": "Main shoot - product and lifestyle",
+                                "location": "Studio A + Urban location",
+                                "scenes": [3, 4],
+                                "duration": "10 hours"
+                            },
+                            {
+                                "dayNumber": 3,
+                                "date": "2026-03-03",
+                                "description": "Final shots and wrap",
+                                "location": "Studio A",
+                                "scenes": [5],
+                                "duration": "6 hours"
+                            }
+                        ]
+                    },
+                    "crew": [
+                        {"role": "Director", "responsibilities": "Overall creative vision", "count": 1},
+                        {"role": "Director of Photography", "responsibilities": "Camera and lighting", "count": 1},
+                        {"role": "Camera Operator", "responsibilities": "Camera operation", "count": 2},
+                        {"role": "Gaffer", "responsibilities": "Lighting setup", "count": 1},
+                        {"role": "Sound Engineer", "responsibilities": "Audio recording", "count": 1},
+                        {"role": "Production Assistant", "responsibilities": "General support", "count": 3}
+                    ],
+                    "locations": [
+                        {
+                            "name": "Studio A",
+                            "address": "123 Production Way, Los Angeles, CA",
+                            "scenes": [1, 2, 5],
+                            "permitRequired": False,
+                            "notes": "Controlled environment, full lighting grid available"
+                        },
+                        {
+                            "name": "Urban Street Location",
+                            "address": "Downtown Arts District",
+                            "scenes": [3, 4],
+                            "permitRequired": True,
+                            "notes": "Film permit required, best shot during golden hour"
+                        }
+                    ],
+                    "equipment": [
+                        {"item": "Cinema Camera (RED)", "quantity": 2},
+                        {"item": "Prime Lens Set", "quantity": 1},
+                        {"item": "Lighting Kit", "quantity": 3},
+                        {"item": "Gimbal Stabilizer", "quantity": 1},
+                        {"item": "Audio Recorder", "quantity": 1},
+                        {"item": "Wireless Mics", "quantity": 3}
+                    ],
+                    "legal": [
+                        {"document": "Location Permit", "status": "required", "notes": "Apply 2 weeks in advance"},
+                        {"document": "Talent Release Forms", "status": "required", "notes": "All on-screen talent"},
+                        {"document": "Music Licensing", "status": "required", "notes": "For background music"},
+                        {"document": "Insurance Certificate", "status": "obtained", "notes": "General liability coverage"}
+                    ]
+                }
+            
+            return
+        
+        # Real pipeline execution using LangGraph workflows
+        if step == "concept":
+            # Run the video pipeline to generate concept
+            brief = params["brief"]
+            creative_brief = parse_creative_brief({
+                "theme": brief.get("creativeDirection", ""),
+                "brand_name": brief.get("brandMandatories", [""])[0] if brief.get("brandMandatories") else "Brand",
+                "target_duration_sec": brief.get("duration", 30),
+                "aspect_ratio": "16:9",
+                "platform": brief.get("platform", "youtube").lower()
+            })
+            
+            initial_state = {
+                "theme": creative_brief['theme'],
+                "concept": "",
+                "screenplay_1": "",
+                "screenplay_2": "",
+                "screenplay_winner": "",
+                "story_board": "",
+                "overall_status": "",
+                "creative_brief": creative_brief,
+                "auto_select_screenplay": False,
+                "scenes": [],
+                "storyboard_frames": [],
+                "video_clips": [],
+                "final_video_url": "",
+                "manifest_url": "",
+                "qc_status": "",
+                "safety_status": ""
+            }
+            
+            # Run just the concept generation step
+            result = video_graph.invoke(initial_state, {"recursion_limit": 5})
+            
+            project["concept"] = {
+                "id": str(uuid.uuid4()),
+                "title": result.get("concept", "")[:100],
+                "description": result.get("concept", ""),
+                "keyMessage": creative_brief.get("theme", ""),
+                "visualStyle": "AI Generated",
+                "generatedAt": datetime.now().isoformat(),
+                "version": 1
+            }
+            
+        elif step == "screenplays":
+            # Continue from concept to generate screenplays
+            # This would need the full state from concept generation
+            # For now, use mock data as the full integration is complex
+            pass
+            
+        elif step == "storyboard":
+            # Generate storyboard from screenplay
+            pass
+            
+        elif step == "production":
+            # Generate production pack
+            pass
+        
+        job["progress"] = 100
+        job["status"] = "completed"
+        job["completed_at"] = datetime.now().isoformat()
+        
+    except Exception as e:
+        job["status"] = "failed"
+        job["error"] = str(e)
+
+# ============================================================================
+# API Endpoints
+# ============================================================================
+
+@app.get("/")
+async def root():
+    """Health check endpoint"""
+    return {
+        "status": "ok",
+        "message": "Virtual Ad Agency API",
+        "pipelines_available": PIPELINES_AVAILABLE
+    }
+
+# Projects Endpoints
+@app.get("/api/projects")
+async def list_projects():
+    """List all projects"""
+    return list(projects_db.values())
+
+@app.post("/api/projects")
+async def create_project(request: CreateProjectRequest):
+    """Create a new project"""
+    project_id = str(uuid.uuid4())
+    project = {
+        "id": project_id,
+        "name": request.name,
+        "client": request.client,
+        "status": ProjectStatus.DRAFT,
+        "createdAt": datetime.now().isoformat(),
+        "updatedAt": datetime.now().isoformat(),
+        "currentStep": WorkflowStep.BRIEF,
+        "tags": request.tags,
+        "budgetBand": request.budgetBand,
+    }
+    projects_db[project_id] = project
+    return project
+
+@app.get("/api/projects/{project_id}")
+async def get_project(project_id: str):
+    """Get a single project"""
+    if project_id not in projects_db:
+        raise HTTPException(status_code=404, detail="Project not found")
+    return projects_db[project_id]
+
+@app.patch("/api/projects/{project_id}")
+async def update_project(project_id: str, updates: Dict[str, Any]):
+    """Update a project"""
+    if project_id not in projects_db:
+        raise HTTPException(status_code=404, detail="Project not found")
+    
+    project = projects_db[project_id]
+    project.update(updates)
+    project["updatedAt"] = datetime.now().isoformat()
+    return project
+
+@app.delete("/api/projects/{project_id}")
+async def delete_project(project_id: str):
+    """Delete a project"""
+    if project_id not in projects_db:
+        raise HTTPException(status_code=404, detail="Project not found")
+    
+    del projects_db[project_id]
+    return {"message": "Project deleted"}
+
+# Brief Endpoints
+@app.post("/api/projects/{project_id}/brief")
+async def submit_brief(project_id: str, request: SubmitBriefRequest):
+    """Submit a brief for a project"""
+    if project_id not in projects_db:
+        raise HTTPException(status_code=404, detail="Project not found")
+    
+    project = projects_db[project_id]
+    project["brief"] = request.brief.model_dump()
+    project["currentStep"] = WorkflowStep.CONCEPT
+    project["updatedAt"] = datetime.now().isoformat()
+    return project
+
+# Generation Endpoints
+@app.post("/api/projects/{project_id}/generate/concept")
+async def generate_concept(project_id: str, background_tasks: BackgroundTasks):
+    """Generate concept from brief"""
+    if project_id not in projects_db:
+        raise HTTPException(status_code=404, detail="Project not found")
+    
+    project = projects_db[project_id]
+    if "brief" not in project:
+        raise HTTPException(status_code=400, detail="Brief not submitted")
+    
+    job = create_job(project_id, "concept")
+    background_tasks.add_task(
+        run_generation,
+        job["id"],
+        project_id,
+        "concept",
+        {"brief": project["brief"]}
+    )
+    
+    return {
+        "jobId": job["id"],
+        "estimatedTime": job["estimated_time"],
+        "estimatedCost": job["estimated_cost"]
+    }
+
+@app.post("/api/projects/{project_id}/generate/screenplays")
+async def generate_screenplays(project_id: str, background_tasks: BackgroundTasks):
+    """Generate screenplay variants"""
+    if project_id not in projects_db:
+        raise HTTPException(status_code=404, detail="Project not found")
+    
+    project = projects_db[project_id]
+    if "concept" not in project:
+        raise HTTPException(status_code=400, detail="Concept not generated")
+    
+    job = create_job(project_id, "screenplays")
+    background_tasks.add_task(
+        run_generation,
+        job["id"],
+        project_id,
+        "screenplays",
+        {"conceptId": project["concept"]["id"]}
+    )
+    
+    return {
+        "jobId": job["id"],
+        "estimatedTime": job["estimated_time"],
+        "estimatedCost": job["estimated_cost"]
+    }
+
+@app.post("/api/projects/{project_id}/select/screenplay")
+async def select_screenplay(project_id: str, request: SelectScreenplayRequest):
+    """Select winning screenplay"""
+    if project_id not in projects_db:
+        raise HTTPException(status_code=404, detail="Project not found")
+    
+    project = projects_db[project_id]
+    project["selectedScreenplay"] = request.screenplayId
+    project["currentStep"] = WorkflowStep.STORYBOARD
+    project["updatedAt"] = datetime.now().isoformat()
+    return project
+
+@app.post("/api/projects/{project_id}/generate/storyboard")
+async def generate_storyboard(project_id: str, background_tasks: BackgroundTasks):
+    """Generate storyboard"""
+    if project_id not in projects_db:
+        raise HTTPException(status_code=404, detail="Project not found")
+    
+    project = projects_db[project_id]
+    if "selectedScreenplay" not in project:
+        raise HTTPException(status_code=400, detail="Screenplay not selected")
+    
+    job = create_job(project_id, "storyboard")
+    background_tasks.add_task(
+        run_generation,
+        job["id"],
+        project_id,
+        "storyboard",
+        {"screenplayId": project["selectedScreenplay"]}
+    )
+    
+    return {
+        "jobId": job["id"],
+        "estimatedTime": job["estimated_time"],
+        "estimatedCost": job["estimated_cost"]
+    }
+
+@app.post("/api/projects/{project_id}/generate/production")
+async def generate_production_pack(project_id: str, background_tasks: BackgroundTasks):
+    """Generate production pack"""
+    if project_id not in projects_db:
+        raise HTTPException(status_code=404, detail="Project not found")
+    
+    project = projects_db[project_id]
+    if "storyboard" not in project:
+        raise HTTPException(status_code=400, detail="Storyboard not generated")
+    
+    job = create_job(project_id, "production")
+    background_tasks.add_task(
+        run_generation,
+        job["id"],
+        project_id,
+        "production",
+        {"storyboardId": project["storyboard"]["id"]}
+    )
+    
+    return {
+        "jobId": job["id"],
+        "estimatedTime": job["estimated_time"],
+        "estimatedCost": job["estimated_cost"]
+    }
+
+# Job Status Endpoint
+@app.get("/api/jobs/{job_id}")
+async def get_job_status(job_id: str):
+    """Get job status"""
+    if job_id not in jobs_db:
+        raise HTTPException(status_code=404, detail="Job not found")
+    return jobs_db[job_id]
+
+@app.post("/api/jobs/{job_id}/cancel")
+async def cancel_job(job_id: str):
+    """Cancel a job"""
+    if job_id not in jobs_db:
+        raise HTTPException(status_code=404, detail="Job not found")
+    
+    job = jobs_db[job_id]
+    job["status"] = "cancelled"
+    return {"message": "Job cancelled"}
+
+# SSE Endpoint for Progress Updates
+@app.get("/api/stream/generation/{job_id}")
+async def stream_generation_progress(job_id: str):
+    """Stream generation progress via SSE"""
+    if job_id not in jobs_db:
+        raise HTTPException(status_code=404, detail="Job not found")
+    
+    async def event_generator():
+        job = jobs_db[job_id]
+        
+        while job["status"] in ["pending", "running"]:
+            # Send progress update
+            data = {
+                "type": "progress",
+                "data": {
+                    "progress": job["progress"],
+                    "step": job["step"],
+                    "message": f"Processing {job['step']}..."
+                }
+            }
+            yield f"data: {json.dumps(data)}\n\n"
+            
+            await asyncio.sleep(1)
+        
+        # Send completion or error
+        if job["status"] == "completed":
+            data = {
+                "type": "complete",
+                "data": {"message": "Generation completed"}
+            }
+        else:
+            data = {
+                "type": "error",
+                "data": {"message": job.get("error", "Generation failed")}
+            }
+        
+        yield f"data: {json.dumps(data)}\n\n"
+    
+    return StreamingResponse(
+        event_generator(),
+        media_type="text/event-stream"
+    )
+
+# ============================================================================
+# Run Server
+# ============================================================================
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=2501)
